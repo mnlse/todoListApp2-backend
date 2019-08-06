@@ -19,10 +19,12 @@ class TodoListsController < ApplicationController
 
   def create
     @todo_list = TodoList.new(todo_list_params)
+    @todo_list.team = Team.find(params[:team_id])
+
     if @todo_list.save
       render status: 201
     else
-      render status: 422
+      render status: 500
     end
   end
 

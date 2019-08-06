@@ -15,37 +15,35 @@ RSpec.describe "Todo lists requests" do
     todo_list
     todo_list_2
 
-    get(team_todo_list_path(team))
+    get(team_todo_lists_path(team))
     json = JSON.parse(response.body)
     expect(json[0]["name"]).to eq "Groceries"
-    expect(json[1]["name"]).to eq "Testing"
+    expect(json[1]["name"]).to eq "Test"
   end
 
   it "deletes a todo list" do
-    todolist = TodoList.create!(name: "Deletedlist", team: team)
-    delete("/todo_lists/#{todolist.id}")
+    delete(team_todo_list_path(team, todo_list))
     expect(response.status).to eq 200
   end
 
   it "gets todo list" do
-    todolist = TodoList.create!(name: "TodoList", team: team)
-    get("/todo_lists/#{todolist.id}")
+    get(team_todo_list_path(team, todo_list))
     expect(response.status).to eq 200
     json = JSON.parse(response.body)
     expect(json).to have_key "name"
-    expect(json["name"]).to eq "TodoList"
+    expect(json["name"]).to eq "Groceries"
   end
 
   it "throws a 404 not found when the ID is wrong" do
-    todolist = TodoList.create!(name: "Deletedlist", team: team)
-    get("/todo_lists/#{todolist.id}123")
+    todo_list
+    get(team_todo_list_path(team, todo_list.id + 222))
     expect(response.status).to eq 404
   end
 
   it "creates a new todo list" do
-    post('/todo_lists', params: { todo_list: { name: "Test" } } )
+    post(team_todo_lists_path(team), params: { todo_list: { name: "Test", team: team } } )
     expect(response.status).to eq 201
-    get('/todo_lists')
+    get(team_todo_lists_path(team))
     expect(response.status).to eq 200
     json = JSON.parse(response.body)
     expect(json[0]).to have_key "name"
@@ -53,7 +51,7 @@ RSpec.describe "Todo lists requests" do
   end
 
   it "doesn't create an empty todo list" do
-    post('/todo_lists', params: { todo_list: { name: "" } } )
-    expect(response.status).to eq 422
+    post(team_todo_lists_path(team), params: { todo_list: { name: "", team: team } } )
+    expect(response.status).to eq 500
   end
 end
