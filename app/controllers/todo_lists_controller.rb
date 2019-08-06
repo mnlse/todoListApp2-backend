@@ -20,7 +20,7 @@ class TodoListsController < ApplicationController
   def create
     @todo_list = TodoList.new(todo_list_params)
     if @todo_list.save
-      render status: 200
+      render status: 201
     else
       render status: 422
     end

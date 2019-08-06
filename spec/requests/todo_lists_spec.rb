@@ -49,7 +49,7 @@ RSpec.describe "Todo lists requests" do
 
     it "creates a new todo list" do
       post('/todo_lists', params: { todo_list: { name: "Test" } } )
-      expect(response.status).to eq 200
+      expect(response.status).to eq 201
       get('/todo_lists')
       expect(response.status).to eq 200
       json = JSON.parse(response.body)
@@ -61,7 +61,6 @@ RSpec.describe "Todo lists requests" do
       post('/todo_lists', params: { todo_list: { name: "" } } )
       expect(response.status).to eq 422
     end
-
   end
 
 end
