@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Todo List Items spec" do
-  
   let(:team) do
     Team.create!(name: "Team1")
   end
@@ -76,6 +75,6 @@ RSpec.describe "Todo List Items spec" do
 
     post(team_todo_list_todo_list_items_path(team, todo_list), params: { todo_list_item: { name: name, is_done: is_done, due_date: due_date } })
 
-    expect(response.status).to eq 200
+    expect(response.status).to eq 201
   end
 end

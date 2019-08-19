@@ -1,10 +1,14 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: [:show, :destroy, :update]
 
+  def index
+    render json: Team.all.as_json, status: 200
+  end
+
   def create
     @team = Team.new(team_params)
     if @team.save
-      render status: 201
+      render json: @team, status: 201
     else
       render status: 500
     end

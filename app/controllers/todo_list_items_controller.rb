@@ -31,7 +31,7 @@ class TodoListItemsController < ApplicationController
     @todo_list_item.todo_list = TodoList.find(params[:todo_list_id])
 
     if @todo_list_item.save!
-      render status: 200
+      render json: @todo_list_item, status: 201
     else
       render status: 500
     end

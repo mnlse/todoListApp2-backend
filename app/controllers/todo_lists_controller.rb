@@ -6,7 +6,8 @@ class TodoListsController < ApplicationController
   end
 
   def index
-    render json: TodoList.all, status: 200
+    @todo_lists = Team.find(params[:team_id]).todo_lists
+    render json: @todo_lists, status: 200
   end
 
   def destroy
@@ -22,9 +23,17 @@ class TodoListsController < ApplicationController
     @todo_list.team = Team.find(params[:team_id])
 
     if @todo_list.save
-      render status: 201
+      render json: @todo_list, status: 201
     else
       render status: 500
+    end
+  end
+
+  def update
+    if @todo_list.update(todo_list_params)
+      render status: 200
+    else
+      render status: 400
     end
   end
 
